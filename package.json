@@ -1,0 +1,51 @@
+{
+  "name": "SpaceVikingJS",
+  "version": "1.0.0",
+  "description": "Space Viking: The Text Adventure",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack -p --bail",
+    "dev": "node webpack.config-dev.js -d --watch",
+    "test": ""
+  },
+  "author": "Alex Lockhart",
+  "license": "MIT",
+  "dependencies": {
+    "babel-runtime": "6.11.x",
+    "material-ui": "0.15.x",
+    "react": "15.3.x",
+    "react-dom": "15.3.x",
+    "react-typewriter": "^0.4.1",
+    "resolve-url-loader": "1.6.x",
+    "whatwg-fetch": "1.0.x"
+  },
+  "devDependencies": {
+    "babel": "6.5.x",
+    "babel-core": "6.14.x",
+    "babel-eslint": "6.1.x",
+    "babel-loader": "6.2.x",
+    "babel-polyfill": "6.13.x",
+    "babel-preset-es2015": "6.14.x",
+    "babel-preset-react": "6.11.x",
+    "babel-preset-stage-0": "6.5.x",
+    "css-loader": "0.25.x",
+    "eslint": "2.13.x",
+    "eslint-config-airbnb": "9.0.x",
+    "eslint-loader": "1.5.x",
+    "eslint-plugin-import": "1.14.x",
+    "eslint-plugin-jsx-a11y": "1.5.x",
+    "eslint-plugin-react": "5.2.x",
+    "extract-text-webpack-plugin": "1.0.x",
+    "favicons": "4.7.1",
+    "favicons-webpack-plugin": "0.0.x",
+    "html-webpack-plugin": "2.22.x",
+    "json-loader": "^0.5.4",
+    "node-sass": "3.9.x",
+    "null-loader": "0.1.x",
+    "sass-loader": "3.2.x",
+    "style-loader": "0.13.x",
+    "url-loader": "0.5.x",
+    "webpack": "1.13.x",
+    "webpack-dev-server": "1.15.x"
+  }
+}
