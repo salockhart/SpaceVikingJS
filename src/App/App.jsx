@@ -1,6 +1,10 @@
 import React from 'react';
 import './App.css';
 
+import OpeningScript from '../Scripts/Opening';
+import FirstEmailScript from '../Scripts/FirstEmail';
+import NameScript from '../Scripts/Name';
+
 const commands = {
 	'help': 'I help those who help themselves',
 	'spaceviking': 'lets go',
@@ -17,11 +21,28 @@ class App extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.state = {
-			canType: true,
+			canType: false,
 			isError: false,
 			terminal: [],
 			input: ''
 		};
+	}
+
+	componentDidMount() {
+		this.readScript(OpeningScript);
+		this.readScript(FirstEmailScript);
+		this.readScript(NameScript);
+	}
+
+	readScript = (script) => {
+		let terminal = this.state.terminal;
+		terminal.push({
+			stamp: false,
+			text: <span>{script}</span>
+		});
+		this.setState({
+			terminal
+		});
 	}
 
 	getPrompt = () => {
