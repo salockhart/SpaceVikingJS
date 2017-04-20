@@ -21,7 +21,7 @@ class App extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 
 		this.state = {
-			canType: false,
+			canType: true,
 			isError: false,
 			terminal: [],
 			input: ''
