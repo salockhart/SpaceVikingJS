@@ -38,16 +38,16 @@ class App extends React.Component {
 			const terminal = this.state.terminal;
 			const input = this.state.input;
 			const args = input.split(' ');
+			terminal.push({
+				stamp: true,
+				text: <span><div className="prompt blue">$</div>{input}</span>,
+			});
 			if (args[0] in commands) {
-				terminal.push({
-					stamp: true,
-					text: input,
-				});
 				terminal.push({
 					stamp: true,
 					text: commands[args[0]],
 				});
-			} else {
+			} else if (input !== '') {
 				terminal.push({
 					stamp: true,
 					text: `'${args[0]}' is not a valid command. Type 'help' for help`,
