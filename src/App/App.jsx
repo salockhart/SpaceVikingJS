@@ -2,9 +2,11 @@ import React from 'react';
 import './App.css';
 
 const commands = {
-	'help' : 'I help those who help themselves',
-	'spaceviking' : 'lets go',
+	'help': 'I help those who help themselves',
+	'spaceviking': 'lets go',
 };
+
+const PROMPT_SYMBOL = '❯';
 
 class App extends React.Component {
 
@@ -40,7 +42,7 @@ class App extends React.Component {
 			const args = input.split(' ');
 			terminal.push({
 				stamp: true,
-				text: <span><div className="prompt blue">$</div>{input}</span>,
+				text: <span><div className="prompt magenta">{PROMPT_SYMBOL}</div>{input}</span>,
 			});
 			if (args[0] in commands) {
 				terminal.push({
@@ -75,7 +77,7 @@ class App extends React.Component {
 				className="terminal"
 				ref={e => this.terminal = e}>
 				<div className="output">{terminalText}</div>
-				<div className="prompt blue">$</div>
+				<div className="prompt magenta">{PROMPT_SYMBOL}</div>
 				<input
 					className="input"
 					type="text"
