@@ -18,9 +18,19 @@ class App extends React.Component {
 
 		this.state = {
 			canType: true,
+			isError: false,
 			terminal: [],
 			input: ''
 		};
+	}
+
+	getPrompt = () => {
+		const color = this.state.isError ? 'red' : 'magenta';
+		return (
+			<div className={`prompt ${color}`}>
+				{PROMPT_SYMBOL}
+			</div>
+		);
 	}
 
 	handleInput(event) {
@@ -39,17 +49,20 @@ class App extends React.Component {
 		if (event.keyCode === 13) {
 			const terminal = this.state.terminal;
 			const input = this.state.input;
+			let isError = this.state.isError;
 			const args = input.split(' ');
 			terminal.push({
 				stamp: true,
-				text: <span><div className="prompt magenta">{PROMPT_SYMBOL}</div>{input}</span>,
+				text: <span>{this.getPrompt()}{input}</span>,
 			});
 			if (args[0] in commands) {
+				isError = false;
 				terminal.push({
 					stamp: true,
 					text: commands[args[0]],
 				});
 			} else if (input !== '') {
+				isError = true;
 				terminal.push({
 					stamp: true,
 					text: `'${args[0]}' is not a valid command. Type 'help' for help`,
@@ -57,7 +70,8 @@ class App extends React.Component {
 			}
 			this.setState({
 				terminal,
-				input: ''
+				input: '',
+				isError,
 			}, () => {
 				this.terminal.scrollTop = this.terminal.scrollHeight;
 			});
@@ -77,7 +91,7 @@ class App extends React.Component {
 				className="terminal"
 				ref={e => this.terminal = e}>
 				<div className="output">{terminalText}</div>
-				<div className="prompt magenta">{PROMPT_SYMBOL}</div>
+				{this.getPrompt()}
 				<input
 					className="input"
 					type="text"
