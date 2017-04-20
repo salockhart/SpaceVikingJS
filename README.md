@@ -13,7 +13,7 @@ SPACE VIKING is a textbased adventure game about Neo-vikings and a great calamit
 
 `npm install`
 
-`npm run dev`
+`npm run start`
 
 ## Build
 
