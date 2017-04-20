@@ -1,6 +1,42 @@
 body {
     background: rgb(43, 47, 58);
     font-family: 'Menlo', monospace;
-    color: white;
+    color: #F1F1F0;
     font-size: 20px;
+}
+
+.black {
+    color: #000000;
+}
+
+.brightblack {
+    color: #686868;
+}
+
+.red {
+    color: #FF5C57;
+}
+
+.green {
+    color: #5AF78E;
+}
+
+.yellow {
+    color: #F3F99D;
+}
+
+.blue {
+    color: #57C7FF;
+}
+
+.magenta {
+    color: #FF6AC1;
+}
+
+.cyan {
+    color: #9AEDFE;
+}
+
+.white {
+    color: #F1F1F0;
 }

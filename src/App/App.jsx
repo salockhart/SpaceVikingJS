@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 
 const commands = {
-	"help" : "I help those who help themselves",
-	"spaceviking" : "lets go",
+	'help' : 'I help those who help themselves',
+	'spaceviking' : 'lets go',
 };
 
 class App extends React.Component {
@@ -37,7 +37,7 @@ class App extends React.Component {
 		if (event.keyCode === 13) {
 			const terminal = this.state.terminal;
 			const input = this.state.input;
-			const args = input.split(" ");
+			const args = input.split(' ');
 			if (args[0] in commands) {
 				terminal.push({
 					stamp: true,
@@ -72,13 +72,13 @@ class App extends React.Component {
 		});
 		return (
 			<div
-				className='terminal'
+				className="terminal"
 				ref={e => this.terminal = e}>
-				<div className='output'>{terminalText}</div>
-				<div className='prompt'>$</div>
+				<div className="output">{terminalText}</div>
+				<div className="prompt blue">$</div>
 				<input
-					className='input'
-					type='text'
+					className="input"
+					type="text"
 					autoFocus
 					ref={e => this.terminalInput = e}
 					value={this.state.input}
