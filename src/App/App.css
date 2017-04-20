@@ -1,11 +1,16 @@
 .terminal {
     min-width: 200px;
-    width: 50vw;
-    margin: 20vh auto;
-    height: 60vh;
+    width: 60vw;
+    margin: 5vh auto;
+    height: 90vh;
     overflow: scroll;
 }
 
+.prompt {
+  display: inline-block;
+  padding-right: 5px;
+  color: #57C7FF
+}
 .terminal .input {
     border: none;
     background-color: transparent;

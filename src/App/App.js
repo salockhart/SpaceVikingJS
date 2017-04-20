@@ -1,6 +1,10 @@
 import React from 'react';
 import './App.css';
 
+const commands = [
+	"help",
+];
+
 class App extends React.Component {
 
 	constructor(props) {
@@ -32,15 +36,23 @@ class App extends React.Component {
 		if (event.keyCode === 13) {
 			const terminal = this.state.terminal;
 			const input = this.state.input;
-			terminal.push({
-				stamp: true,
-				text: input
-			});
+			const args = input.split(" ");
+			if (commands.includes(args[0])) {
+				terminal.push({
+					stamp: true,
+					text: input
+				});
+			} else {
+				terminal.push({
+					stamp: true,
+					text: `'${args[0]}' is not a valid command. Type 'help' for help`,
+				});
+			}
 			this.setState({
 				terminal,
 				input: ""
 			}, () => {
-				this.terminal.scrollTop = this.terminal.scrollHeight;				
+				this.terminal.scrollTop = this.terminal.scrollHeight;
 			});
 		}
 	}
@@ -58,6 +70,7 @@ class App extends React.Component {
 				className="terminal"
 				ref={e => this.terminal = e}>
 				<div className="output">{terminalText}</div>
+				<div className="prompt">$</div>
 				<input
 					className="input"
 					type="text"
