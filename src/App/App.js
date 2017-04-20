@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
 
-const commands = [
-	"help",
-];
+const commands = {
+	"help" : "I help those who help themselves",
+	"spaceviking" : "lets go",
+};
 
 class App extends React.Component {
 
@@ -37,10 +38,14 @@ class App extends React.Component {
 			const terminal = this.state.terminal;
 			const input = this.state.input;
 			const args = input.split(" ");
-			if (commands.includes(args[0])) {
+			if (args[0] in commands) {
 				terminal.push({
 					stamp: true,
-					text: input
+					text: input,
+				});
+				terminal.push({
+					stamp: true,
+					text: commands[args[0]],
 				});
 			} else {
 				terminal.push({
