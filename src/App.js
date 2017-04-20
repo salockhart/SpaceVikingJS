@@ -1,6 +1,6 @@
 import React from 'react';
 import TypeWriter from 'react-typewriter';
-import './App.scss';
+import './App.css';
 
 class App extends React.Component {
 
