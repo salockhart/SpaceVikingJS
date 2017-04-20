@@ -7,10 +7,11 @@
 }
 
 .prompt {
-  display: inline-block;
-  padding-right: 5px;
-  color: #57C7FF
+    display: inline-block;
+    padding-right: 5px;
+    color: #57C7FF
 }
+
 .terminal .input {
     border: none;
     background-color: transparent;
