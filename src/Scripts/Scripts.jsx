@@ -1,7 +1,58 @@
 import React from 'react';
 
 export default {
-	Opening: [
+	Kernel: () => [
+		<span>/////////////////////////////BEGIN TRANSMISSION/////////////////////////////<br /><br /></span>,
+		<span>///////////////////////////LOAD UP ERROR RECIEVED///////////////////////////<br /><br /></span>,
+		<span>*<br /></span>,
+		<span>(34wpCD error recieved)<br /></span>,
+		<span>//</span>,
+		<span>.....<br /></span>,
+		<span>LOADING WINDOWS XP SERVICE PACK 4 >>>>><br /><br /></span>,
+		<span>kernel 4.5.2 \"SUPER SPACE\"<br /></span>,
+		<span>busting shell ghost<br /></span>,
+		<span>popping kernals<br /><br /></span>,
+		<span>...<br /></span>,
+		<span>WINDOWS XP SERVICE PACK 4 BOOTUP COMPLETE::<br /><br /></span>,
+		<span>forced wakeup pushed from 25.223.196.168:asgard<br /><br /></span>,
+		<span>//////////////begin cryostasis wake up//////////////<br /><br /></span>,
+		<span>initializing heart pump </span>,
+		<span>... </span>,
+		<span>done!<br /></span>,
+		<span>inflating lung[0] </span>,
+		<span>... </span>,
+		<span>done!<br /></span>,
+		<span>inflating lung[1] </span>,
+		<span>... </span>,
+		<span>done!<br /></span>,
+		<span>initializing brain spark </span>,
+		<span>... </span>,
+		<span>failed!<br /></span>,
+		<span>&#160;&#160;&#160;&#160;&#160;initializing brain spark </span>,
+		<span>... </span>,
+		<span>done!<br /><br /></span>,
+		<span>ping central nervous system<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>...<br />&#160;&#160;&#160;&#160;&#160;timeout 100% packet loss<br /><br /></span>,
+		<span>//////////////check ship status//////////////<br /><br /></span>,
+		<span>touch NS.bridge:<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>status- 404 bridge not found<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>non-functional<br /><br /></span>,
+		<span>touch NS.hull:<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>status- totally gnasty<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>non-functional<br /><br /></span>,
+		<span>touch NS.mess:<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>status- lil dirty<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>functional<br /><br /></span>,
+		<span>touch NS.core:<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>status- spewing radiation<br />&#160;&#160;&#160;&#160;&#160;</span>,
+		<span>subnominal<br /><br /></span>,
+		<span>//////////////Ship check complete//////////////<br /><br /></span>,
+		<span>//////////////cryostasis wakeup complete//////////////<br /><br /></span>,
+		<span>initializing email client</span>,
+		<span>... <br /></span>,
+	],
+
+	Opening: () => [
 		<span>A Blessed Boys production:<br /></span>,
 		<br />,
 		<br />,
@@ -15,13 +66,13 @@ export default {
 		<span>Press Enter to Continue.</span>,
 	],
 
-	EmailSent: [
+	EmailSent: () => [
 		<br />,		
 		<span>Sending..........<br /></span>,
 		<span>Sent!<br /></span>,
 	],
 
-	NameEmail: [
+	NameEmail: () => [
 		<span className="red">*** ALERT ***<br /></span>,
 		<span className="red">New E-mail Recieved!<br /></span>,
 		<span>From: odin@valhalla.no<br /></span>,
@@ -44,72 +95,53 @@ export default {
 		<br />,
 	],
 	
-	TitleEmail: [
+	TitleEmail: (name) => [
 		<span className="red">*** ALERT ***<br /></span>,
 		<span className="red">New E-mail Recieved!<br /></span>,
 		<span>From: odin@valhalla.no<br /></span>,
 		<span>Subject: Re:Re: Hello Warrior<br /></span>,
 		<br />,
-		<span>An interesting name indeed. What is your <span className="yellow">title</span><br /></span>,
+		<span>{name}. An interesting name indeed. What is your <span className="yellow">title</span>?<br /></span>,
 		<br />,
 		<span><span className="green">*** DRAFTING ***</span><br /></span>,
 		<span>To: odin@valhalla.no<br /></span>,
 		<span>Subject: Re:Re:Re: Hello Warrior<br /></span>,
 		<br />,
 	],
+
+	BeforeMapEmail: (name, profession) => [
+		<span className="red">*** ALERT ***<br /></span>,
+		<span className="red">New E-mail Recieved!<br /></span>,
+		<span>From: odin@valhalla.no<br /></span>,
+		<span>Subject: Re:Re:Re:Re: Hello Warrior<br /></span>,
+		<br />,
+		<span>Ah, <span className="yellow">{name}</span> the <span className="yellow">{profession}</span>. Yes, I remember you.<br /></span>,
+		<br />,
+		<span>I call upon you now <span className="yellow">{name}</span>, to go and rid this universe of your mutating vessel.<br /></span>,
+		<br />,
+		<span>You must reach the core and destroy it for good and finish this.<br /></span>,
+		<br />,
+		<span>Here on the wall is a map of the <span className="cyan">NSFVV</span>, I have marked your position with a pre-age symbol: *<br /></span>,
+		<br />,
+	],
+
+	MidMapEmail: () => [
+		<br />,
+		<span>This map will not be available to you after you leave this room, you will have to mark each room after you've visited them.<br /></span>,
+		<span>This is what your map will normally look like:<br /></span>,
+		<br />,
+	],
+
+	AfterMapEmail: (name, profession) => [
+		<br />,
+		<span>And here take <span className="blue">these</span>, you may find them useful on your quest.<br /></span>,
+		<br />,
+		<span className="red">Odin has bestowed upon thee, Soedekilling. <br/>A lyn-gladius that is given to novice warriors.<br/></span>,
+		<span className="red">Odin has also bestowed upon thee a <span className="cyan">Palm Pilot</span>, a relic from the <span className="blue">Information Age</span>. You can use this to update your map as you venture further.<br /></span>,
+		<br />,
+		<span>Now careful, although your Palm Pilot will not affect you, anything you pick up on your journey will slow you down, and ruin your effectiveness in battle.<br /></span>,
+		<span>Finally, remember that your keen <span className="yellow">{profession}</span> instinct allows you to seek for \help at any time.<br /></span>,
+		<br />,
+		<span>Now Go Warrior. You will die in the process, but in doing so you will save the universe.<br /></span>
+	],
 };
-
-
-
-// waitForUser();
-// String profession = userInput;
-// printMessage("<br>Sending");
-// playSound("send");
-// printMessage("..........", 125);
-// printMessage(" Sent!<br>");
-// Thread.sleep(1000);
-// console.setText("<html>");
-
-// //Third email
-// printMessage(makeRed("*** ALERT ***<br>"));
-// printMessage(makeRed("New E-mail Recieved!<br>"));
-// printMessage("From: odin@valhalla.no<br>");
-// printMessage("Subject: Re:Re:Re:Re: Hello Warrior<br><br>");
-// printMessage("Ah, "+makeYellow(name)+" the "+makeYellow(profession)+". Yes, I remember you.<br>");
-// printMessage("<br>", 0);
-// printMessage("I call upon you now "+makeYellow(name)+", to go and rid this universe of your mutating vessel.<br>");
-// printMessage("You must reach the core and destroy it for good and finish this.<br>");
-// printMessage("<br>", 0);
-
-// //prints the entire map
-// 	//when map is viewed during the actual game only previously visited rooms
-// 	//and adjacent rooms will show
-// printMessage("Here on the wall is a map of the "+makeCyan("NSFVV")+", I have marked your position with a pre-age symbol: *<br>");
-// printMessage("It should look familiar to your time, it is called an asterisk.<br>");
-// printMessage("<br>", 0);
-// printMessage(map.fullMap(), 0);
-// printMessage("<br>", 0);
-// printMessage("This map will not be available to you after you leave this room, you will have<br>");
-// printMessage("to mark each room after you've visited them. ");
-// printMessage("This is what your map will normally look like:<br>");
-// printMessage("<br>", 0);
-// printMessage(map.toString(), 0);
-// printMessage("<br>", 0);
-
-
-// //receive first weapon
-// 	//palm pilot joke
-
-// printMessage("And here take "+makeBlue("these")+", you may find them useful on your quest.<br>");
-// Item soedekilling = new Item("Soedekilling", "A lyn-gladius", 8, "Weapon", 20, true);
-
-// playSound("equip");
-// printMessage(makeRed("Odin has bestowed upon thee, Soedekilling. <br>A lyn-gladius that is given to novice warriors.<br>"));
-// printMessage(makeRed("Odin has also bestowed upon thee a ")+makeCyan("Palm Pilot")+makeRed(",<br>a relic from the ")+makePurple("Information Age")+makeRed(".<br>You can use this to update your map as you venture further.<br>"));
-// printMessage("Now careful, although your Palm Pilot will not effect you,<br>anything you pick up on your journey will slow you down, and ruin your effectiveness in battle.<br>");
-// printMessage("Finally, remember that your keen "+ makeYellow(profession) +" instinct allows you to seek for \"help\" at any time.<br>");
-
-// printMessage("Now Go Warrior.<br>You will die in the process, but in doing so you will save the universe.<br>");
-
-// Thread.sleep(1000);
-// console.setText("<html>");

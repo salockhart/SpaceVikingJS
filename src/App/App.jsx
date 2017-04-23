@@ -26,7 +26,6 @@ class App extends React.Component {
 			waitingForSubmit: false,
 			canEnter: false,
 			canType: false,
-			displayPrompt: false,
 			isError: false,
 			terminal: [],
 			input: ''
@@ -35,45 +34,57 @@ class App extends React.Component {
 
 	componentDidMount() {
 		(async () => {
-			await this.readScript(Scripts.Opening);
+			await this.readScript(Scripts.Opening());
 			await this.asyncSetState({
 				canEnter: true,
 			});
+			this.focusOnInputField();
 			await this.waitForSubmit();
 			await this.clearTerminal();
 			await this.asyncSetState({
 				canEnter: false,
 			});
-			await this.readScript(Scripts.NameEmail);
+			await this.readScript(Scripts.Kernel());
+			await this.waitForMilliseconds(1000);
+			await this.clearTerminal();
+			await this.readScript(Scripts.NameEmail());
 			await this.asyncSetState({
 				canEnter: true,
 				canType: true,
-				displayPrompt: true,
 			});
+			this.focusOnInputField();
 			const name = await this.waitForSubmit();
 			await this.asyncSetState({
 				canEnter: false,
 				canType: false,
-				displayPrompt: false,
 			});
-			await this.readScript(Scripts.EmailSent);
+			await this.readScript(Scripts.EmailSent(name));
 			await this.waitForMilliseconds(1000);
 			await this.clearTerminal();
-			await this.readScript(Scripts.TitleEmail);
+			await this.readScript(Scripts.TitleEmail(name));
 			await this.asyncSetState({
 				canEnter: true,
 				canType: true,
-				displayPrompt: true,
 			});
-			const title = await this.waitForSubmit();
+			this.focusOnInputField();
+			const profession = await this.waitForSubmit();
 			await this.asyncSetState({
 				canEnter: false,
 				canType: false,
-				displayPrompt: false,
 			});
-			await this.readScript(Scripts.EmailSent);
+			await this.readScript(Scripts.EmailSent());
 			await this.waitForMilliseconds(1000);
 			await this.clearTerminal();
+			await this.readScript(Scripts.BeforeMapEmail(name, profession));
+			await this.readScript(Scripts.MidMapEmail(name, profession));
+			await this.readScript(Scripts.AfterMapEmail(name, profession));
+			await this.waitForMilliseconds(2000);
+			await this.clearTerminal();
+			await this.asyncSetState({
+				runningIntro: false,
+				canEnter: true,
+				canType: true,
+			});
 		})();
 	}
 
@@ -88,7 +99,7 @@ class App extends React.Component {
 			let terminal = this.state.terminal;
 			terminal.push({
 				stamp: false,
-				text: <ScriptReader typingSpeed={5} script={script} onComplete={resolve} />
+				text: <ScriptReader typingSpeed={5} script={script} onComplete={resolve} onToken={this.moveTerminalToTop} />
 			});
 			this.setState({
 				terminal
@@ -102,8 +113,12 @@ class App extends React.Component {
 		});
 	}
 
+	moveTerminalToTop = () => {
+		this.terminal.scrollTop = this.terminal.scrollHeight;
+	}
+
 	getPrompt = () => {
-		if (!this.state.displayPrompt) {
+		if (!this.state.canEnter && !this.state.canType) {
 			return null;
 		}
 		const color = this.state.isError ? 'red' : 'magenta';
@@ -126,6 +141,10 @@ class App extends React.Component {
 		return new Promise(resolve => {
 			setTimeout(resolve, ms);
 		});
+	}
+
+	focusOnInputField = () => {
+		this.terminalInput.focus();
 	}
 
 	handleInput(event) {
@@ -176,9 +195,7 @@ class App extends React.Component {
 				terminal,
 				input: '',
 				isError,
-			}, () => {
-				this.terminal.scrollTop = this.terminal.scrollHeight;
-			});
+			}, this.moveTerminalToTop);
 		}
 	}
 
@@ -200,11 +217,12 @@ class App extends React.Component {
 					className="input"
 					type="text"
 					autoFocus
+					disabled={!this.state.canEnter && !this.state.canType}
 					ref={e => this.terminalInput = e}
 					value={this.state.input}
 					onChange={this.handleInput}
 					onKeyUp={this.handleSubmit}
-					onBlur={() => this.terminalInput.focus()} />
+					onBlur={this.focusOnInputField} />
 			</div>
 		);
 	}

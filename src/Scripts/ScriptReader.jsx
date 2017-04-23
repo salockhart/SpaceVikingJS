@@ -29,6 +29,7 @@ class ScriptReader extends React.Component {
 			maxDelay: this.props.typingSpeed,
 			minDelay: this.props.typingSpeed,
 			onTypingEnd: this.onTypingEnd,
+			onTyped: this.onToken,
 			typing: 1,
 		};
 		return <span>{this.state.printedLines.map((line, idx) => <Typewriter key={idx} {...typingProps}>{line}</Typewriter>)}</span>;
@@ -40,6 +41,7 @@ ScriptReader.propTypes = {
 	typingSpeed: PropTypes.number.isRequired,
 	script: PropTypes.array.isRequired,
 	onComplete: PropTypes.func.isRequired,
+	onToken: PropTypes.func.isRequired,
 };
 
 export default ScriptReader;
