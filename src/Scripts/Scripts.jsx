@@ -2,14 +2,18 @@ import React from 'react';
 
 export default {
 	Kernel: () => [
-		<span>/////////////////////////////BEGIN TRANSMISSION/////////////////////////////<br /><br /></span>,
-		<span>///////////////////////////LOAD UP ERROR RECIEVED///////////////////////////<br /><br /></span>,
+		<span>/////////////////////////////BEGIN TRANSMISSION/////////////////////////////</span>,
+		<br />,
+		<br />,
+		<span>///////////////////////////LOAD UP ERROR RECIEVED///////////////////////////</span>,
+		<br />,
+		<br />,
 		<span>*<br /></span>,
 		<span>(34wpCD error recieved)<br /></span>,
 		<span>//</span>,
 		<span>.....<br /></span>,
 		<span>LOADING WINDOWS XP SERVICE PACK 4 >>>>><br /><br /></span>,
-		<span>kernel 4.5.2 \"SUPER SPACE\"<br /></span>,
+		<span>kernel 4.5.2 "SUPER SPACE"<br /></span>,
 		<span>busting shell ghost<br /></span>,
 		<span>popping kernals<br /><br /></span>,
 		<span>...<br /></span>,
@@ -53,7 +57,7 @@ export default {
 	],
 
 	Opening: () => [
-		<span>A Blessed Boys production:<br /></span>,
+		<span>A Blessed Boys production:</span>,
 		<br />,
 		<br />,
 		<span>   _____ ____  ___   ____________   _    ________ __ _____   ________<br /></span>,

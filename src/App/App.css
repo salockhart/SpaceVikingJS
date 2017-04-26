@@ -1,9 +1,9 @@
 .terminal {
-    min-width: 200px;
     width: 60vw;
     margin: 5vh auto;
     height: 90vh;
     overflow: scroll;
+    font-size: 1.31vw;
 }
 
 .prompt {
