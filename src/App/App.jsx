@@ -7,17 +7,17 @@ import ScriptReader from '../Scripts/ScriptReader';
 import Scripts from '../Scripts/Scripts';
 
 import Map from '../Map/Map';
-
-const commands = {
-	'help': 'I help those who help themselves',
-	'spaceviking': 'lets go',
-};
+import Commands from '../Commands/Commands';
+import Player from '../Models/Player';
+import Items from '../Prefabs/Items';
 
 const PROMPT_SYMBOL = '❯';
 
 class App extends React.Component {
 
 	map:Map;
+	commands:Commands;
+	player:Player;
 	terminal:any;
 	terminalInput:any;
 	state: {
@@ -34,6 +34,9 @@ class App extends React.Component {
 		super(props);
 
 		this.map = new Map();
+		this.player = new Player('Niclas', 'Godking', 400, 25, 25, Items.playerWeapons.soedekilling, null);
+		this.player.inventory.push(Items.palmPilot);
+		this.commands = new Commands(this.map, this.player);
 
 		this.state = {
 			runningIntro: true,
@@ -67,21 +70,21 @@ class App extends React.Component {
 				canType: true,
 			});
 			this.focusOnInputField();
-			const name = await this.waitForSubmit();
+			this.player.name = await this.waitForSubmit();
 			await this.asyncSetState({
 				canEnter: false,
 				canType: false,
 			});
-			await this.readScript(Scripts.EmailSent(name));
+			await this.readScript(Scripts.EmailSent(this.player.name));
 			await this.waitForMilliseconds(1000);
 			await this.clearTerminal();
-			await this.readScript(Scripts.TitleEmail(name));
+			await this.readScript(Scripts.TitleEmail(this.player.name));
 			await this.asyncSetState({
 				canEnter: true,
 				canType: true,
 			});
 			this.focusOnInputField();
-			const profession = await this.waitForSubmit();
+			this.player.profession = await this.waitForSubmit();
 			await this.asyncSetState({
 				canEnter: false,
 				canType: false,
@@ -89,11 +92,11 @@ class App extends React.Component {
 			await this.readScript(Scripts.EmailSent());
 			await this.waitForMilliseconds(1000);
 			await this.clearTerminal();
-			await this.readScript(Scripts.BeforeMapEmail(name, profession));
+			await this.readScript(Scripts.BeforeMapEmail(this.player.name, this.player.profession));
 			await this.readScript(this.map.mapString(true), true);
-			await this.readScript(Scripts.MidMapEmail(name, profession));
+			await this.readScript(Scripts.MidMapEmail(this.player.name, this.player.profession));
 			await this.readScript(this.map.mapString(), true);
-			await this.readScript(Scripts.AfterMapEmail(name, profession));
+			await this.readScript(Scripts.AfterMapEmail(this.player.name, this.player.profession));
 			await this.waitForMilliseconds(2000);
 			await this.clearTerminal();
 			await this.asyncSetState({
@@ -101,6 +104,7 @@ class App extends React.Component {
 				canEnter: true,
 				canType: true,
 			});
+			this.focusOnInputField();
 		})();
 	}
 
@@ -190,28 +194,18 @@ class App extends React.Component {
 		}
 		if (event.keyCode === 13) {
 			let waitingForSubmit = this.state.waitingForSubmit;
-			const terminal = this.state.terminal;
+			let terminal = this.state.terminal;
 			const input = this.state.input;
 			let isError = this.state.isError;
-			const args = input.split(' ');
 			terminal.push({
-				noNewLine: this.state.runningIntro,
 				stamp: true,
 				text: <span>{this.getPrompt()}{input}</span>,
 			});
 			if (!this.state.runningIntro) {
-				if (args[0] in commands) {
-					isError = false;
-					terminal.push({
-						stamp: true,
-						text: commands[args[0]],
-					});
-				} else if (input !== '') {
-					isError = true;
-					terminal.push({
-						stamp: true,
-						text: `'${args[0]}' is not a valid command. Type 'help' for help`,
-					});
+				const {err, output} = this.commands.runCommand(input);
+				if (!err || input !== '') {
+					isError = err;
+					terminal = terminal.concat(output);
 				}
 			}
 			if (waitingForSubmit) {
@@ -230,10 +224,10 @@ class App extends React.Component {
 	render() {
 		const terminalText = this.state.terminal.map((entry, idx) => {
 			const terminalLine = <span>{entry.text}</span>;
-			if (idx === 0 || entry.noNewLine) {
+			if (entry.noNewLine) {
 				return [terminalLine];
 			}
-			return [<br />, terminalLine];
+			return [terminalLine, <br />];
 		});
 		return (
 			<div

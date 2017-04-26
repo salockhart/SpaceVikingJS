@@ -43,6 +43,8 @@ export default {
 
 	potion: new Item('Health Potion', 'Restores Half of Maximum Health', 1, 'Potion', 1, true),
 
+	palmPilot: new Item('Palm Pilot', 'A rusty old device, useful for communication', 0, 'Key Item', 0, true),
+
 	statues: {
 		nisk: new Item('Statue of Nisk', 'The statue fills you with an unknown power; you feel like even more of a Viking. Defense +10 Strength +5', 1, 'Statue', 0, true),
 		caeven: new Item('Statue of Caeven', 'The statue fills you with an unknown power, you feel stronger than ever before. Strength +15', 1, 'Statue', 0, true),	

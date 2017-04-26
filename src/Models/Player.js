@@ -4,10 +4,10 @@ import Item from './Item';
 
 class Player extends Person {
 	inventory:Array<Item>;
-	saint:string;
+	saint:?string;
 	maxHealth:number;
 
-	constructor(name:string, profession:string, health:number, strength:number, defense:number, weapon:Item, saint:string) {
+	constructor(name:string, profession:string, health:number, strength:number, defense:number, weapon:Item, saint:?string) {
 		super(name, profession, health, strength, defense, weapon);
 		this.saint = saint;
 		this.inventory = [];
