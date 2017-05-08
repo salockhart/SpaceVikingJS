@@ -1,3 +1,4 @@
+import React from 'react';
 import Map from '../Map/Map';
 import Player from '../Models/Player';
 
@@ -107,7 +108,7 @@ class Commands {
 			},
 			'equip': {
 				description: 'equip a weapon from your inventory',
-				fn: () => { },
+				fn: this.equipItem,
 			},
 			'drop': {
 				description: 'drop an item or weapon from your inventory',
@@ -130,6 +131,15 @@ class Commands {
 			return {
 				err: false,
 				output: this.selectItemForPickup(command).map(line => {
+					return {
+						text: line,
+					};
+				}),
+			};
+		} else if (this.state === 'equip') {
+			return {
+				err: false,
+				output: this.selectItemForEquip(command).map(line => {
 					return {
 						text: line,
 					};
@@ -236,6 +246,35 @@ class Commands {
 			this.player.addItem(item);
 			this.map.getCurrentRoom().removeItem(index);
 			return [`${item.toString()} picked up`];
+		}
+	}
+
+	equipItem = () => {
+		if (this.player.inventory.find(item => item.type === 'Weapon')) {
+			this.state = 'equip';
+			return ['Enter the number of your selection:'].concat(this.player.inventory.map((item, idx) => {
+				return `${idx} - ${item.toString()}`;
+			}));
+		} else {
+			return ['There are no weapons in your inventory'];
+		}
+	}
+
+	selectItemForEquip = (index:number) => {
+		if (isNaN(index)) {
+			return ['Please enter a number'];
+		}
+
+		this.state = 'default';
+		if(index >= this.player.inventory.length) {
+			return ['You do not have that item'];
+		} else if (this.player.inventory[index].type !== 'Weapon') {
+			return ['You can only equip weapons, using the numbers above'];
+		} else {
+			this.player.addItem(this.player.weapon);
+			this.player.weapon = this.player.inventory[index];
+			this.player.dropItem(index);
+			return [<span className="blue">{this.player.weapon.toString()} equipped</span>];
 		}
 	}
 }

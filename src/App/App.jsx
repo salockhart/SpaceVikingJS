@@ -51,54 +51,56 @@ class App extends React.Component {
 
 	componentDidMount() {
 		(async () => {
-			await this.readScript(Scripts.Opening());
-			await this.asyncSetState({
-				canEnter: true,
-			});
-			this.focusOnInputField();
-			await this.waitForSubmit();
-			await this.clearTerminal();
-			await this.asyncSetState({
-				canEnter: false,
-			});
-			await this.readScript(Scripts.Kernel());
-			await this.waitForMilliseconds(1000);
-			await this.clearTerminal();
-			await this.readScript(Scripts.NameEmail());
-			await this.asyncSetState({
-				canEnter: true,
-				canType: true,
-			});
-			this.focusOnInputField();
-			this.player.name = await this.waitForSubmit();
-			await this.asyncSetState({
-				canEnter: false,
-				canType: false,
-			});
-			await this.readScript(Scripts.EmailSent(this.player.name));
-			await this.waitForMilliseconds(1000);
-			await this.clearTerminal();
-			await this.readScript(Scripts.TitleEmail(this.player.name));
-			await this.asyncSetState({
-				canEnter: true,
-				canType: true,
-			});
-			this.focusOnInputField();
-			this.player.profession = await this.waitForSubmit();
-			await this.asyncSetState({
-				canEnter: false,
-				canType: false,
-			});
-			await this.readScript(Scripts.EmailSent());
-			await this.waitForMilliseconds(1000);
-			await this.clearTerminal();
-			await this.readScript(Scripts.BeforeMapEmail(this.player.name, this.player.profession));
-			await this.readScript(this.map.mapString(true), true);
-			await this.readScript(Scripts.MidMapEmail(this.player.name, this.player.profession));
-			await this.readScript(this.map.mapString(), true);
-			await this.readScript(Scripts.AfterMapEmail(this.player.name, this.player.profession));
-			await this.waitForMilliseconds(2000);
-			await this.clearTerminal();
+			if (!process.env.REACT_APP_SKIP) {
+				await this.readScript(Scripts.Opening());
+				await this.asyncSetState({
+					canEnter: true,
+				});
+				this.focusOnInputField();
+				await this.waitForSubmit();
+				await this.clearTerminal();
+				await this.asyncSetState({
+					canEnter: false,
+				});
+				await this.readScript(Scripts.Kernel());
+				await this.waitForMilliseconds(1000);
+				await this.clearTerminal();
+				await this.readScript(Scripts.NameEmail());
+				await this.asyncSetState({
+					canEnter: true,
+					canType: true,
+				});
+				this.focusOnInputField();
+				this.player.name = await this.waitForSubmit();
+				await this.asyncSetState({
+					canEnter: false,
+					canType: false,
+				});
+				await this.readScript(Scripts.EmailSent(this.player.name));
+				await this.waitForMilliseconds(1000);
+				await this.clearTerminal();
+				await this.readScript(Scripts.TitleEmail(this.player.name));
+				await this.asyncSetState({
+					canEnter: true,
+					canType: true,
+				});
+				this.focusOnInputField();
+				this.player.profession = await this.waitForSubmit();
+				await this.asyncSetState({
+					canEnter: false,
+					canType: false,
+				});
+				await this.readScript(Scripts.EmailSent());
+				await this.waitForMilliseconds(1000);
+				await this.clearTerminal();
+				await this.readScript(Scripts.BeforeMapEmail(this.player.name, this.player.profession));
+				await this.readScript(this.map.mapString(true), true);
+				await this.readScript(Scripts.MidMapEmail(this.player.name, this.player.profession));
+				await this.readScript(this.map.mapString(), true);
+				await this.readScript(Scripts.AfterMapEmail(this.player.name, this.player.profession));
+				await this.waitForMilliseconds(2000);
+				await this.clearTerminal();
+			}
 			await this.asyncSetState({
 				runningIntro: false,
 				canEnter: true,
