@@ -2,24 +2,24 @@ import Map from '../Map/Map';
 import Player from '../Models/Player';
 
 type command = {
-	description:string,
+	description: string,
 	noNewLine:?boolean,
-	fn:any,
+	fn: any,
 }
 
 class Commands {
 
-	map:Map;
-	player:Player;
-	commands:{[string]:command};
-	fight:{[string]:command};
-	inventory:{[string]:command};
+	map: Map;
+	player: Player;
+	commands: { [string]: command };
+	fight: { [string]: command };
+	inventory: { [string]: command };
 
-	state:string;
+	state: string;
 
-	constructor(map:Map, player:Player) {
+	constructor(map: Map, player: Player) {
 		this.state = 'default';
-		
+
 		this.map = map;
 		this.player = player;
 
@@ -41,7 +41,7 @@ class Commands {
 			},
 			'pick up': {
 				description: 'pick up an item',
-				fn: () => {},
+				fn: this.pickUpItem,
 			},
 			'move north': {
 				description: 'move to the northern adjacent room (if valid)',
@@ -61,7 +61,7 @@ class Commands {
 			},
 			'unlock': {
 				description: 'unlocks an adjacent locked room',
-				fn: () => {},
+				fn: this.unlockRooms,
 			},
 			'stats': {
 				description: 'displays current character stats',
@@ -73,7 +73,7 @@ class Commands {
 			},
 			'spaceviking': {
 				description: 'lets go',
-				fn: () => {},
+				fn: () => ['lets go'],
 			},
 		};
 
@@ -84,11 +84,11 @@ class Commands {
 			},
 			'attack': {
 				description: 'attack the enemy',
-				fn: () => {},
+				fn: () => { },
 			},
 			'run': {
 				description: 'flee from the enemy',
-				fn: () => {},
+				fn: () => { },
 			}
 		};
 
@@ -103,15 +103,15 @@ class Commands {
 			},
 			'use': {
 				description: 'use an item from your inventory',
-				fn: () => {},
+				fn: () => { },
 			},
 			'equip': {
 				description: 'equip a weapon from your inventory',
-				fn: () => {},
+				fn: () => { },
 			},
 			'drop': {
 				description: 'drop an item or weapon from your inventory',
-				fn: () => {},
+				fn: () => { },
 			},
 			'exit': {
 				description: 'leave the inventory',
@@ -120,12 +120,21 @@ class Commands {
 		};
 	}
 
-	runCommand = (command:string) => {
+	runCommand = (command: string) => {
 		let commands = this.commands;
 		if (this.state === 'fight') {
 			commands = this.fight;
 		} else if (this.state === 'inventory') {
 			commands = this.inventory;
+		} else if (this.state === 'pickup') {
+			return {
+				err: false,
+				output: this.selectItemForPickup(command).map(line => {
+					return {
+						text: line,
+					};
+				}),
+			};
 		}
 		if (command in commands) {
 			return {
@@ -147,7 +156,7 @@ class Commands {
 		}
 	}
 
-	getHelp = (isFight:boolean):Array<string> => {
+	getHelp = (isFight: boolean): Array<string> => {
 		let commands = this.commands;
 		if (this.state === 'fight') {
 			commands = this.fight;
@@ -191,6 +200,43 @@ class Commands {
 	exitInventory = () => {
 		this.state = 'default';
 		return ['Exited the inventory'];
+	}
+
+	unlockRooms = () => {
+		if (this.player.hasKey()) {
+			this.map.unlock();
+			this.player.deleteItem('Key');
+			return ['You unlocked any locked doors in the room'];
+		} else {
+			return ['You have no keys to unlock with'];
+		}
+	}
+
+	pickUpItem = () => {
+		if (this.map.getCurrentRoom().items.length !== 0) {
+			this.state = 'pickup';
+			return ['Enter the number of your selection:'].concat(this.map.getCurrentRoom().items.map((item, idx) => {
+				return `${idx} - ${item.toString()}`;
+			}));
+		} else {
+			return ['There is nothing to pick up.'];
+		}
+	}
+
+	selectItemForPickup = (index:number) => {
+		if (isNaN(index)) {
+			return ['Please enter a number'];
+		}
+
+		this.state = 'default';
+		if (index >= this.map.getCurrentRoom().items.length) {
+			return ['There isn\'t that many items in the room'];
+		} else {
+			const item = this.map.getCurrentRoom().items[index];
+			this.player.addItem(item);
+			this.map.getCurrentRoom().removeItem(index);
+			return [`${item.toString()} picked up`];
+		}
 	}
 }
 

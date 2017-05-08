@@ -29,6 +29,10 @@ class Map {
 		this.visitCurrentRoom();
 	}
 
+	getCurrentRoom = () => {
+		return this.getRoomAt(this.location);
+	}
+
 	getRoomAt = (location:[number, number]):?Room => {
 		if (location[0] < 0 || location[0] >= this.rooms.length) {
 			return null;
@@ -40,7 +44,7 @@ class Map {
 	}
 
 	visitCurrentRoom = () => {
-		const currentRoom = this.getRoomAt(this.location);
+		const currentRoom = this.getCurrentRoom();
 		if (currentRoom) {
 			currentRoom.visit();
 		}
@@ -77,7 +81,7 @@ class Map {
 
 	look = ():Array<string> => {
 		const descriptions = [];
-		const currentRoom = this.getRoomAt(this.location);
+		const currentRoom = this.getCurrentRoom();
 		if (currentRoom)
 			descriptions.push(currentRoom.description);
 		if (this.location === [0, 5])
