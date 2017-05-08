@@ -3,6 +3,22 @@ import React from 'react';
 import Room from './Room';
 import Rooms from '../Prefabs/Rooms';
 
+function northLocation(currentLocation) {
+	return [currentLocation[0] - 1, currentLocation[1]];
+}
+
+function eastLocation(currentLocation) {
+	return [currentLocation[0], currentLocation[1] + 1];
+}
+
+function southLocation(currentLocation) {
+	return [currentLocation[0] + 1, currentLocation[1]];
+}
+
+function westLocation(currentLocation) {
+	return [currentLocation[0], currentLocation[1] - 1];
+}
+
 class Map {
 	rooms:Array<Array<?Room>>
 	location:[number, number];
@@ -31,34 +47,31 @@ class Map {
 	}
 
 	moveNorth = () => {
-		const location = [this.location[0], this.location[1] - 1];
-		this.move(location, 'north');
+		return this.move(northLocation(this.location), 'north');
 	}
 
 	moveEast = () => {
-		const location = [this.location[0] + 1, this.location[1]];
-		this.move(location, 'east');
+		return this.move(eastLocation(this.location), 'east');
 	}
 
 	moveSouth = () => {
-		const location = [this.location[0], this.location[1] + 1];
-		this.move(location, 'south');
+		return this.move(southLocation(this.location), 'south');
 	}
 
 	moveWest = () => {
-		const location = [this.location[0] - 1, this.location[1]];
-		this.move(location, 'west');
+		return this.move(westLocation(this.location), 'west');
 	}
 
-	move = (location:[number, number], direction:string):string => {
+	move = (location:[number, number], direction:string):Array<string> => {
 		const room = this.getRoomAt(location);
 		if (room && !room.isLocked) {
 			this.location = location;
-			return `You walk through the ${direction}ern door`;
+			this.visitCurrentRoom();
+			return [`You walk through the ${direction}ern door`];
 		} else if (!room) {
-			return `There is no door to the ${direction}`;
+			return [`There is no door to the ${direction}`];
 		} else {
-			return `You try to continue, but the ${direction}ern door is locked`;
+			return [`You try to continue, but the ${direction}ern door is locked`];
 		}
 	}
 
@@ -119,6 +132,7 @@ class Map {
 		return this.rooms.map((row, rowIdx) => {
 			const rooms = row.map((room, colIdx) => {
 				if (room && (fullMap || room.hasVisited || this.isAdjacent(room))) {
+					console.log(`(${rowIdx}, ${colIdx}):`, room);
 					if (rowIdx === this.location[0] && colIdx === this.location[1]) {
 						return <span>&#91;&#42;&#93;</span>;
 					} else {
@@ -138,11 +152,12 @@ class Map {
 	}
 
 	getAdjacentRooms = ():[?Room, ?Room, ?Room, ?Room] => {
-		const northRoom = this.getRoomAt([this.location[0], this.location[1] - 1]);
-		const eastRoom = this.getRoomAt([this.location[0] + 1, this.location[1]]);
-		const southRoom = this.getRoomAt([this.location[0], this.location[1] + 1]);
-		const westRoom = this.getRoomAt([this.location[0] - 1, this.location[1]]);
-		return [northRoom, eastRoom, southRoom, westRoom];
+		return [
+			this.getRoomAt(northLocation(this.location)),
+			this.getRoomAt(eastLocation(this.location)),
+			this.getRoomAt(southLocation(this.location)),
+			this.getRoomAt(westLocation(this.location)),
+		];
 	}
 
 	isAdjacent = (room:Room):boolean => {

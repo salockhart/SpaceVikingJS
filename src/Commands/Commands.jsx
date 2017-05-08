@@ -23,6 +23,8 @@ class Commands {
 		this.map = map;
 		this.player = player;
 
+		console.log(this.map);
+
 		this.commands = {
 			'map': {
 				description: 'open your map (shows only previously visited and adjacent rooms)',
@@ -35,7 +37,7 @@ class Commands {
 			},
 			'look': {
 				description: 'look at your surroundings',
-				fn: () => {},
+				fn: this.map.look,
 			},
 			'pick up': {
 				description: 'pick up an item',
@@ -43,19 +45,19 @@ class Commands {
 			},
 			'move north': {
 				description: 'move to the northern adjacent room (if valid)',
-				fn: () => {},
+				fn: this.map.moveNorth,
 			},
 			'move east': {
 				description: 'move to the eastern adjacent room (if valid)',
-				fn: () => {},
+				fn: this.map.moveEast,
 			},
 			'move west': {
 				description: 'move to the western adjacent room (if valid)',
-				fn: () => {},
+				fn: this.map.moveWest,
 			},
 			'move south': {
 				description: 'move to the southern adjacent room (if valid)',
-				fn: () => {},
+				fn: this.map.moveSouth,
 			},
 			'unlock': {
 				description: 'unlocks an adjacent locked room',
