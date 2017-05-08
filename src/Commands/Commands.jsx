@@ -24,13 +24,11 @@ class Commands {
 		this.map = map;
 		this.player = player;
 
-		console.log(this.map);
-
 		this.commands = {
 			'map': {
 				description: 'open your map (shows only previously visited and adjacent rooms)',
 				noNewLine: true,
-				fn: this.getMap,
+				fn: this.map.mapString,
 			},
 			'inventory': {
 				description: 'open inventory',
@@ -98,7 +96,7 @@ class Commands {
 				description: 'view this page',
 				fn: this.getHelp,
 			},
-			'see': {
+			'look': {
 				description: 'view the contents of your inventory',
 				fn: this.viewInventory,
 			},
@@ -112,7 +110,7 @@ class Commands {
 			},
 			'drop': {
 				description: 'drop an item or weapon from your inventory',
-				fn: () => { },
+				fn: this.dropItem,
 			},
 			'exit': {
 				description: 'leave the inventory',
@@ -128,28 +126,25 @@ class Commands {
 		} else if (this.state === 'inventory') {
 			commands = this.inventory;
 		} else if (this.state === 'pickup') {
-			return {
-				err: false,
-				output: this.selectItemForPickup(command).map(line => {
-					return {
-						text: line,
-					};
-				}),
-			};
+			commands = [{
+				description: 'drop item from inventory',
+				fn: this.selectItemForPickup,
+			}];
 		} else if (this.state === 'equip') {
-			return {
-				err: false,
-				output: this.selectItemForEquip(command).map(line => {
-					return {
-						text: line,
-					};
-				}),
-			};
+			commands = [{
+				description: 'equip item from inventory',
+				fn: this.selectItemForEquip,
+			}];
+		} else if (this.state === 'drop') {
+			commands = [{
+				description: 'drop item from inventory',
+				fn: this.selectItemForDrop,
+			}];
 		}
 		if (command in commands) {
 			return {
 				err: false,
-				output: commands[command].fn().map(line => {
+				output: commands[command].fn(command).map(line => {
 					return {
 						noNewLine: !!commands[command].noNewLine,
 						text: line,
@@ -178,10 +173,6 @@ class Commands {
 		});
 	}
 
-	getMap = () => {
-		return this.map.mapString();
-	}
-
 	openInventory = () => {
 		this.state = 'inventory';
 		return ['What will you do with your inventory?'];
@@ -189,7 +180,6 @@ class Commands {
 
 	viewInventory = () => {
 		if (this.player.inventory.length !== 0) {
-			console.log(this.player.inventory);
 			let inv = this.player.inventory.map((item, idx) => {
 				const desc = [
 					`${idx} - ${item.name}`,
@@ -233,7 +223,7 @@ class Commands {
 		}
 	}
 
-	selectItemForPickup = (index:number) => {
+	selectItemForPickup = (index: number) => {
 		if (isNaN(index)) {
 			return ['Please enter a number'];
 		}
@@ -252,21 +242,23 @@ class Commands {
 	equipItem = () => {
 		if (this.player.inventory.find(item => item.type === 'Weapon')) {
 			this.state = 'equip';
-			return ['Enter the number of your selection:'].concat(this.player.inventory.map((item, idx) => {
-				return `${idx} - ${item.toString()}`;
-			}));
+			return ['Enter the number of your selection:'].concat(this.player.inventory
+				.filter(item => item.type === 'Weapon')
+				.map((item, idx) => {
+					return `${idx} - ${item.toString()}`;
+				}));
 		} else {
 			return ['There are no weapons in your inventory'];
 		}
 	}
 
-	selectItemForEquip = (index:number) => {
+	selectItemForEquip = (index: number) => {
 		if (isNaN(index)) {
 			return ['Please enter a number'];
 		}
 
-		this.state = 'default';
-		if(index >= this.player.inventory.length) {
+		this.state = 'inventory';
+		if (index >= this.player.inventory.length) {
 			return ['You do not have that item'];
 		} else if (this.player.inventory[index].type !== 'Weapon') {
 			return ['You can only equip weapons, using the numbers above'];
@@ -275,6 +267,34 @@ class Commands {
 			this.player.weapon = this.player.inventory[index];
 			this.player.dropItem(index);
 			return [<span className="blue">{this.player.weapon.toString()} equipped</span>];
+		}
+	}
+
+	dropItem = () => {
+		if (this.player.inventory.length !== 0) {
+			this.state = 'drop';
+			return ['Enter the number of your selection:'].concat(this.player.inventory.map((item, idx) => {
+				return `${idx} - ${item.toString()}`;
+			}));
+		} else {
+			return ['There are no items in your inventory'];
+		}
+	}
+
+	selectItemForDrop = (index: number) => {
+		console.log({index});
+		if (isNaN(index)) {
+			return ['Please enter a number'];
+		}
+
+		this.state = 'inventory';
+		if (index >= this.player.inventory.length) {
+			return ['You do not have that item'];
+		} else {
+			const item = this.player.inventory[index];
+			this.map.getCurrentRoom().addItem(item);
+			this.player.dropItem(index);
+			return [<span className="blue">{item.toString()} dropped</span>];
 		}
 	}
 }

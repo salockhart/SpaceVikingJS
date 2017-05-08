@@ -136,7 +136,6 @@ class Map {
 		return this.rooms.map((row, rowIdx) => {
 			const rooms = row.map((room, colIdx) => {
 				if (room && (fullMap || room.hasVisited || this.isAdjacent(room))) {
-					console.log(`(${rowIdx}, ${colIdx}):`, room);
 					if (rowIdx === this.location[0] && colIdx === this.location[1]) {
 						return <span>&#91;&#42;&#93;</span>;
 					} else {
