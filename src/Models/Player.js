@@ -48,6 +48,16 @@ class Player extends Person {
 		const damage = Math.round(this.weapon.dataValue + factor*this.strength + 25*Math.log(this.strength/this.getInventoryWeight()));
 		return damage;
 	}
+
+	stats = ():Array<string> => {
+		return [
+			`Health: ${this.health}/${this.maxHealth}`,
+			`Strength: ${this.strength}`,
+			`Defense: ${this.defense}`,
+			`Inventory Weight: ${this.getInventoryWeight()}/${this.strength}`,
+			`Equipped Weapon: ${this.weapon.toString()}`
+		];
+	}
 }
 
 export default Player;

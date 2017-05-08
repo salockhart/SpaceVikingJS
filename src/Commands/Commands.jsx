@@ -65,7 +65,7 @@ class Commands {
 			},
 			'stats': {
 				description: 'displays current character stats',
-				fn: () => {},
+				fn: this.player.stats,
 			},
 			'help': {
 				description: 'view this page',
