@@ -24,6 +24,7 @@ class Commands {
 		this.map = map;
 		this.player = player;
 
+		//TODO: on move, check for enemy and enter fight if there is one
 		this.commands = {
 			'map': {
 				description: 'open your map (shows only previously visited and adjacent rooms)',
@@ -83,11 +84,11 @@ class Commands {
 			},
 			'attack': {
 				description: 'attack the enemy',
-				fn: () => { },
+				fn: () => { },	//TODO: add function call for attacking an enemy
 			},
 			'run': {
 				description: 'flee from the enemy',
-				fn: () => { },
+				fn: () => { },	//TODO: add function call for fleeing from an enemy
 			}
 		};
 
@@ -102,7 +103,7 @@ class Commands {
 			},
 			'use': {
 				description: 'use an item from your inventory',
-				fn: () => { },
+				fn: () => { },	//TODO: add function call for using an item, like potion or statue
 			},
 			'equip': {
 				description: 'equip a weapon from your inventory',
@@ -282,7 +283,6 @@ class Commands {
 	}
 
 	selectItemForDrop = (index: number) => {
-		console.log({index});
 		if (isNaN(index)) {
 			return ['Please enter a number'];
 		}
