@@ -24,8 +24,12 @@ class Player extends Person {
 		this.health = Math.min(this.maxHealth, this.health + health);
 	}
 
-	dropItem = (index:number) => {
+	dropItemAtIndex = (index:number) => {
 		this.inventory.splice(index, 1);
+	}
+
+	dropItem = (item:Item) => {
+		this.dropItemAtIndex(this.inventory.findIndex(entry => entry.type === item.type && entry.name === item.name));
 	}
 
 	addItem = (item:Item) => {
@@ -39,7 +43,7 @@ class Player extends Person {
 	deleteItem = (type:string) => {
 		const index = this.inventory.findIndex(item => item.type === type);
 		if (index > -1) {
-			this.dropItem(index);
+			this.dropItemAtIndex(index);
 		}
 	}
 
