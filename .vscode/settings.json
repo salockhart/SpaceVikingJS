@@ -1,5 +1,10 @@
 // Place your settings in this file to overwrite default and user settings.
 {
 	"javascript.validate.enable": false,
-    "flow.useNPMPackagedFlow": true
+    "flow.useNPMPackagedFlow": true,
+	"search.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/build": true
+    }
 }
