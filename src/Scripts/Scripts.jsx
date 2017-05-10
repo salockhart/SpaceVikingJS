@@ -148,4 +148,40 @@ export default {
 		<br />,
 		<span>Now Go Warrior. You will die in the process, but in doing so you will save the universe.<br /></span>
 	],
+
+	Endgame: () => [
+		<br />,
+		<br />,
+		<span>As you strike the final blow, the core dissolves into a puddle of <span className="green">radioactive slag</span>.<br /></span>,
+		<br />,
+		<span>The ship suddenly loses power, which was evidently being provided by the core.<br /></span>,
+		<span>You feel your feet lift off of the ground as the artificial gravity disengages.<br /></span>,
+		<span>A sudden realization: This ship is orbiting a fierce <span className="red">Red Giant Star</span>, and without the core powering the gravity drive you will very shortly be plunged into the nuclear heart of the aformentioned <span className="red">star</span>.<br /></span>,
+		<br />,
+		<span>As the ship begins to fall, you are comforted to know that you have completed your mission.<br /></span>,
+		<span className="cyan">The universe is safe.<br /></span>,
+	],
+
+	FinalStatus: () => [
+		<span className="yellow">Stellar altitude dropping, suborbital trajectory detected.<br /></span>,
+		<span className="yellow">Recommend immediate evacuation<br /></span>,
+		<span className="yellow">Peril level 100<br /></span>,
+	],
+
+	FinalEmail: () => [
+		<span className="red">*** ALERT ***<br /></span>,
+		<span className="red">New E-mail Recieved!<br /></span>,
+		<span>From: odin@valhalla.no<br /></span>,
+		<span>Subject: null<br /></span>,
+		<br />,
+		<span>Goodbye, warrior.<br /></span>,
+		<span>You have done well.</span>,
+	],
+
+	Death: () => [
+		<span>Heat threshold exceeded, terminating commlink to 25.223.196.168:asgard<br /></span>,
+		<br />,
+		<br />,
+		<span>//////////////////////////////END TRANSMISSION//////////////////////////////</span>,
+	]
 };

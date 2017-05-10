@@ -22,11 +22,13 @@ class Commands {
 
 	state: string;
 
-	constructor(map: Map, player: Player) {
+	constructor(map: Map, player: Player, endgame) {
 		this.state = 'default';
 
 		this.map = map;
 		this.player = player;
+
+		this.endgame = endgame;
 
 		//TODO: on move, check for enemy and enter fight if there is one
 		this.commands = {
@@ -88,12 +90,16 @@ class Commands {
 			},
 			'attack': {
 				description: 'attack the enemy',
-				fn: () => { },	//TODO: add function call for attacking an enemy
+				fn: this.attackEnemy,
 			},
 			'run': {
 				description: 'flee from the enemy',
-				fn: () => { },	//TODO: add function call for fleeing from an enemy
-			}
+				fn: this.fleeEnemy,
+			},
+			'stats': {
+				description: 'get the stats of the fight',
+				fn: this.fightStats,
+			},
 		};
 
 		this.inventory = {
@@ -376,7 +382,56 @@ class Commands {
 				this.player.maxHealth += 100;
 				return [initialMessage, 'Defense +5 Max Health +100'];
 			}
-		}			
+		}
+	}
+
+	attackEnemy = () => {
+		const enemy = this.map.getCurrentRoom().enemy;
+		const damageDealt = enemy.takeDamage(this.player.dealDamage());
+		const damageDealtStr = `You dealt ${damageDealt} damage to your opponent`;
+
+		if (enemy.health <= 0) {
+			return [damageDealtStr];
+		}
+
+		const damageTaken = this.player.takeDamage(enemy.dealDamage());
+		return [damageDealtStr, `Your opponent dealt ${damageTaken} damage to you`];
+	}
+
+	fleeEnemy = () => {
+		return [<span>Oh I'm sorry. Clearly we've been mistaken and are narrating the deeds of a perpetually <span className="yellow">SNIVELING COWARD</span>, as opposed to a powerful <span className="yellow">{this.player.profession}</span> embarking on a <span className="red">VIKING</span> related journey in the cold and unforgiving <span className="cyan">VOID OF SPACE.</span> Would you also like a spiced latte and a foot massage on your way out? Hm? No, I thought not. Now go back and fight.</span>];
+	}
+
+	fightStats = () => {
+		const enemy = this.map.getCurrentRoom().enemy;
+		return this.player.stats().concat([
+			'',
+			'Enemy:',
+			`Health: ${enemy.health}`,
+			`Strength: ${enemy.strength}`,
+			`Defense: ${enemy.defense}`,
+			`Equipped Weapon: ${enemy.weapon.toString()}`,
+		]);
+	}
+
+	checkFightStatus = () => {
+		const enemy = this.map.getCurrentRoom().enemy;
+		if (enemy.health <= 0) {
+			this.map.getCurrentRoom().enemy = null;
+			this.state = 'default';
+			if (this.map.location === this.map.bossLocation) {
+				this.endgame();
+			}
+			return [`You defeated ${enemy.name} ${enemy.profession}`];			
+		} else if (this.player.health <= 0) {
+			return [
+				<span>You were defeated by {enemy.name} {enemy.profession}</span>,
+				'GAME OVER'
+			];
+		}
+
+		if (this.state !== 'fight')
+			this.player.heal(0.05 * this.player.maxHealth);
 	}
 }
 

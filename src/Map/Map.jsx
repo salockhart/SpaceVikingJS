@@ -20,12 +20,14 @@ function westLocation(currentLocation) {
 }
 
 class Map {
-	rooms:Array<Array<?Room>>
-	location:[number, number];
+	rooms: Array<Array<?Room>>
+	location: [number, number];
+	bossLocation: [number, number];
 
 	constructor() {
 		this.rooms = Rooms;
 		this.location = [11, 7];
+		this.bossLocation = [0, 5];
 		this.visitCurrentRoom();
 	}
 
@@ -33,7 +35,7 @@ class Map {
 		return this.getRoomAt(this.location);
 	}
 
-	getRoomAt = (location:[number, number]):?Room => {
+	getRoomAt = (location: [number, number]):?Room => {
 		if (location[0] < 0 || location[0] >= this.rooms.length) {
 			return null;
 		}
@@ -66,7 +68,7 @@ class Map {
 		return this.move(westLocation(this.location), 'west');
 	}
 
-	move = (location:[number, number], direction:string):Array<string> => {
+	move = (location: [number, number], direction: string): Array<string> => {
 		const room = this.getRoomAt(location);
 		if (room && !room.isLocked) {
 			this.location = location;
@@ -79,7 +81,7 @@ class Map {
 		}
 	}
 
-	look = ():Array<string> => {
+	look = (): Array<string> => {
 		const descriptions = [];
 		const currentRoom = this.getCurrentRoom();
 		if (currentRoom)
@@ -87,25 +89,25 @@ class Map {
 		if (this.location === [0, 5])
 			return descriptions;
 		const [northRoom, eastRoom, southRoom, westRoom] = this.getAdjacentRooms();
-		if (northRoom){
+		if (northRoom) {
 			if (northRoom.isLocked)
 				descriptions.push('There is a locked door to the North');
 			else
 				descriptions.push('There is a door to the North');
 		}
-		if (eastRoom){
+		if (eastRoom) {
 			if (eastRoom.isLocked)
 				descriptions.push('There is a locked door to the East');
 			else
 				descriptions.push('There is a door to the East');
 		}
-		if (southRoom){
+		if (southRoom) {
 			if (southRoom.isLocked)
 				descriptions.push('There is a locked door to the South');
 			else
 				descriptions.push('There is a door to the South');
 		}
-		if (westRoom){
+		if (westRoom) {
 			if (westRoom.isLocked)
 				descriptions.push('There is a locked door to the West');
 			else
@@ -132,7 +134,7 @@ class Map {
 		}
 	}
 
-	mapString = (fullMap:?boolean):Array<any> => {
+	mapString = (fullMap:?boolean): Array<any> => {
 		return this.rooms.map((row, rowIdx) => {
 			const rooms = row.map((room, colIdx) => {
 				if (room && (fullMap || room.hasVisited || this.isAdjacent(room))) {
@@ -154,7 +156,7 @@ class Map {
 		});
 	}
 
-	getAdjacentRooms = ():[?Room, ?Room, ?Room, ?Room] => {
+	getAdjacentRooms = (): [?Room, ?Room, ?Room, ?Room] => {
 		return [
 			this.getRoomAt(northLocation(this.location)),
 			this.getRoomAt(eastLocation(this.location)),
@@ -163,7 +165,7 @@ class Map {
 		];
 	}
 
-	isAdjacent = (room:Room):boolean => {
+	isAdjacent = (room: Room): boolean => {
 		return this.getAdjacentRooms().includes(room);
 	}
 }
