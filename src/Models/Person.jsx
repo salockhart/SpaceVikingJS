@@ -20,9 +20,9 @@ class Person {
 	}
 
 	takeDamage = (damage:number):number => {
-		const damageTaken = Math.max(damage - (0.5 * this.defense), 0);
+		const damageTaken = Math.round(Math.max(damage - (0.5 * this.defense), 0));
 		this.health = this.health - damageTaken;
-		return Math.round(damageTaken);
+		return damageTaken;
 	}
 
 	dealDamage = ():number => {

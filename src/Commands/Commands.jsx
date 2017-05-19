@@ -22,15 +22,15 @@ class Commands {
 
 	state: string;
 
-	constructor(map: Map, player: Player, endgame) {
+	constructor(map: Map, player: Player, endgame, gameover) {
 		this.state = 'default';
 
 		this.map = map;
 		this.player = player;
 
 		this.endgame = endgame;
+		this.gameover = gameover;
 
-		//TODO: on move, check for enemy and enter fight if there is one
 		this.commands = {
 			'map': {
 				description: 'open your map (shows only previously visited and adjacent rooms)',
@@ -51,19 +51,19 @@ class Commands {
 			},
 			'move north': {
 				description: 'move to the northern adjacent room (if valid)',
-				fn: this.map.moveNorth,
+				fn: this.move(this.map.moveNorth),
 			},
 			'move east': {
 				description: 'move to the eastern adjacent room (if valid)',
-				fn: this.map.moveEast,
+				fn: this.move(this.map.moveEast),
 			},
 			'move west': {
 				description: 'move to the western adjacent room (if valid)',
-				fn: this.map.moveWest,
+				fn: this.move(this.map.moveWest),
 			},
 			'move south': {
 				description: 'move to the southern adjacent room (if valid)',
-				fn: this.map.moveSouth,
+				fn: this.move(this.map.moveSouth),
 			},
 			'unlock': {
 				description: 'unlocks an adjacent locked room',
@@ -203,6 +203,18 @@ class Commands {
 		return Object.keys(commands).map(key => {
 			return `${key}: ${commands[key].description}`;
 		});
+	}
+
+	move = (directionFn): Array<string> => {
+		return () => {
+			const result = directionFn();
+			const enemy = this.map.getCurrentRoom().enemy;
+			if (enemy) {
+				this.state = 'fight';
+				result.push(`You have encountered ${enemy.name} ${enemy.profession}`);
+			}
+			return result;
+		};
 	}
 
 	openInventory = () => {
@@ -391,11 +403,11 @@ class Commands {
 		const damageDealtStr = `You dealt ${damageDealt} damage to your opponent`;
 
 		if (enemy.health <= 0) {
-			return [damageDealtStr];
+			return this.checkFightStatus([damageDealtStr]);
 		}
 
 		const damageTaken = this.player.takeDamage(enemy.dealDamage());
-		return [damageDealtStr, `Your opponent dealt ${damageTaken} damage to you`];
+		return this.checkFightStatus([damageDealtStr, `Your opponent dealt ${damageTaken} damage to you`]);
 	}
 
 	fleeEnemy = () => {
@@ -410,28 +422,24 @@ class Commands {
 			`Health: ${enemy.health}`,
 			`Strength: ${enemy.strength}`,
 			`Defense: ${enemy.defense}`,
-			`Equipped Weapon: ${enemy.weapon.toString()}`,
+			`Equipped Weapon: ${enemy.weapon.toString()} (Damage: ${enemy.weapon.dataValue})`,
 		]);
 	}
 
-	checkFightStatus = () => {
+	checkFightStatus = (notice:Array<string>) => {
 		const enemy = this.map.getCurrentRoom().enemy;
 		if (enemy.health <= 0) {
 			this.map.getCurrentRoom().enemy = null;
 			this.state = 'default';
+			this.player.heal(0.05 * this.player.maxHealth);
 			if (this.map.location === this.map.bossLocation) {
 				this.endgame();
 			}
-			return [`You defeated ${enemy.name} ${enemy.profession}`];			
+			return notice.concat([`You defeated ${enemy.name} ${enemy.profession}`]);
 		} else if (this.player.health <= 0) {
-			return [
-				<span>You were defeated by {enemy.name} {enemy.profession}</span>,
-				'GAME OVER'
-			];
+			return this.gameover(notice.concat([`You were defeated by ${enemy.name} ${enemy.profession}`]));
 		}
-
-		if (this.state !== 'fight')
-			this.player.heal(0.05 * this.player.maxHealth);
+		return notice;
 	}
 }
 

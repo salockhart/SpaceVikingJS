@@ -15,13 +15,13 @@ class Player extends Person {
 	}
 
 	getInventoryWeight = ():number => {
-		return this.inventory
+		return Math.max(this.inventory
 			.map(item => item.weight)
-			.reduce((a,b) => a+b, 0);
+			.reduce((a,b) => a+b, 0), 1);
 	}
 
 	heal = (health:number) => {
-		this.health = Math.min(this.maxHealth, this.health + health);
+		this.health = Math.round(Math.min(this.maxHealth, this.health + health));
 	}
 
 	dropItemAtIndex = (index:number) => {
@@ -50,6 +50,7 @@ class Player extends Person {
 	dealDamage = ():number => {
 		const factor = Math.random() * 5;
 		const damage = Math.round(this.weapon.dataValue + factor*this.strength + 25*Math.log(this.strength/this.getInventoryWeight()));
+		console.log({factor, damage, weapon: this.weapon.dataValue});
 		return damage;
 	}
 
@@ -59,7 +60,7 @@ class Player extends Person {
 			`Strength: ${this.strength}`,
 			`Defense: ${this.defense}`,
 			`Inventory Weight: ${this.getInventoryWeight()}/${this.strength}`,
-			`Equipped Weapon: ${this.weapon.toString()}`
+			`Equipped Weapon: ${this.weapon.toString()} (Damage: ${this.weapon.dataValue})`,
 		];
 	}
 }

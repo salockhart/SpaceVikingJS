@@ -36,13 +36,13 @@ class App extends React.Component {
 		this.map = new Map();
 		this.player = new Player('Niclas', 'Godking', 400, 25, 25, Items.playerWeapons.soedekilling, null);
 		this.player.inventory.push(Items.palmPilot);
-		this.commands = new Commands(this.map, this.player, this.endgame);
+		this.commands = new Commands(this.map, this.player, this.endgame, this.gameover);
 
 		this.state = {
-			runningIntro: true,
+			runningIntro: false,
 			waitingForSubmit: false,
-			canEnter: false,
-			canType: false,
+			canEnter: true,
+			canType: true,
 			isError: false,
 			terminal: [],
 			input: ''
@@ -50,11 +50,15 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		// this.startgame();
-		this.endgame();
+		this.startgame();
 	}
 
 	startgame = async () => {
+		await this.asyncSetState({
+			runningIntro: true,
+			canEnter: false,
+			canType: false,
+		});
 		if (!process.env.REACT_APP_SKIP) {
 			await this.readScript(Scripts.Opening());
 			await this.asyncSetState({
@@ -129,6 +133,15 @@ class App extends React.Component {
 		await this.waitForMilliseconds(4000);
 		await this.clearTerminal();
 		await this.readScript(Scripts.Death());
+	}
+
+	gameover = (notices:Array<string>) => {
+		this.setState({
+			runningIntro: true,
+			canEnter: false,
+			canType: false,
+		});
+		return notices.concat(Scripts.GameOver());
 	}
 
 	asyncSetState = (newState:Object) => {

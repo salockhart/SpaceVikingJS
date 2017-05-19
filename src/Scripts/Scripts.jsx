@@ -60,11 +60,11 @@ export default {
 		<span>A Blessed Boys production:</span>,
 		<br />,
 		<br />,
-		<span>   _____ ____  ___   ____________   _    ________ __ _____   ________<br /></span>,
-		<span>  / ___// __ \/   | / ____/ ____/  | |  / /  _/ //_//  _/ | / / ____/<br /></span>,
-		<span>  \__ \/ /_/ / /| |/ /   / __/     | | / // // . /  / //  |/ / / __  <br /></span>,
-		<span> ___/ / ____/ ___ / /___/ /___     | |/ // // /| |_/ // /|  / /_/ /  <br /></span>,
-		<span>/____/_/   /_/  |_\____/_____/     |___/___/_/ |_/___/_/ |_/\____/   <br /></span>,
+		<span>&nbsp;&nbsp;&nbsp;_____&nbsp;____&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;____________&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;________&nbsp;__&nbsp;_____&nbsp;&nbsp;&nbsp;________<br /></span>,
+		<span>&nbsp;&nbsp;/&nbsp;___//&nbsp;__&nbsp;\/&nbsp;&nbsp;&nbsp;|&nbsp;/&nbsp;____/&nbsp;____/&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;/&nbsp;/&nbsp;&nbsp;_/&nbsp;//_//&nbsp;&nbsp;_/&nbsp;|&nbsp;/&nbsp;/&nbsp;____/<br /></span>,
+		<span>&nbsp;&nbsp;\__ \/ /_/ / /| |/ /   / __/     | | / // // . /  / //  |/ / / __  <br /></span>,
+		<span>&nbsp;___/&nbsp;/&nbsp;____/&nbsp;___&nbsp;/&nbsp;/___/&nbsp;/___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;|/&nbsp;//&nbsp;//&nbsp;/|&nbsp;|_/&nbsp;//&nbsp;/|&nbsp;&nbsp;/&nbsp;/_/&nbsp;/&nbsp;&nbsp;<br /></span>,
+		<span>/____/_/&nbsp;&nbsp;&nbsp;/_/&nbsp;&nbsp;|_\____/_____/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|___/___/_/&nbsp;|_/___/_/&nbsp;|_/\____/&nbsp;&nbsp;&nbsp;<br /></span>,
 		<br />,
 		<br />,
 		<span>Press Enter to Continue.</span>,
@@ -183,5 +183,13 @@ export default {
 		<br />,
 		<br />,
 		<span>//////////////////////////////END TRANSMISSION//////////////////////////////</span>,
-	]
+	],
+
+	GameOver: () => [
+		<span>&nbsp;&nbsp;&nbsp;_________&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;_________&nbsp;&nbsp;&nbsp;____&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;____________&nbsp;</span>,
+		<span>&nbsp;&nbsp;/&nbsp;____/&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;/&nbsp;&nbsp;|/&nbsp;&nbsp;/&nbsp;____/&nbsp;&nbsp;/&nbsp;__&nbsp;\&nbsp;|&nbsp;&nbsp;/&nbsp;/&nbsp;____/&nbsp;__&nbsp;\</span>,
+		<span>&nbsp;/&nbsp;/&nbsp;__/&nbsp;/|&nbsp;|&nbsp;/&nbsp;/|_/&nbsp;/&nbsp;__/&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;/&nbsp;/&nbsp;/&nbsp;|&nbsp;/&nbsp;/&nbsp;__/&nbsp;/&nbsp;/_/&nbsp;/</span>,
+		<span>/&nbsp;/_/&nbsp;/&nbsp;___&nbsp;|/&nbsp;/&nbsp;&nbsp;/&nbsp;/&nbsp;/___&nbsp;&nbsp;&nbsp;/&nbsp;/_/&nbsp;/|&nbsp;|/&nbsp;/&nbsp;/___/&nbsp;_,&nbsp;_/&nbsp;</span>,
+		<span>\____/_/&nbsp;&nbsp;|_/_/&nbsp;&nbsp;/_/_____/&nbsp;&nbsp;&nbsp;\____/&nbsp;|___/_____/_/&nbsp;|_|&nbsp;&nbsp;</span>,
+	],
 };
